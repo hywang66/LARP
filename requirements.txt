@@ -1,0 +1,13 @@
+pandas
+einops
+easydict
+timm
+wandb
+mergedeep
+imageio
+transformers
+tensorboard
+pytorch-msssim
+moviepy
+decord
+lpips

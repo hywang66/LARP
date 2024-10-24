@@ -1,0 +1,176 @@
+trainer: larp_tokenizer_trainer
+
+train_dataset:
+  name: video_dataset
+  args: 
+    root_path: data/metadata
+    split: train
+    frame_num: $frame_num$
+    rand_augment: 'no'
+    csv_file: $csv_file$
+    cls_vid_num: '-1_-1'
+    crop_size: $input_size$
+    scale: 1.0
+    aspect_ratio: 1.0
+    rand_flip: 'yes'
+    use_all_frames: false
+    pre_load: false
+  loader:
+    batch_size: $batch_size$
+    num_workers: $num_workers$
+
+test_dataset:
+  name: video_dataset
+  args: 
+    root_path: data/metadata
+    frame_num: $frame_num$
+    cls_vid_num: '-1_-1'
+    crop_size: $input_size$
+    use_all_frames: false
+    pre_load: false
+  csv_paths: {ucf101_val: ''}
+  loader:
+    batch_size: $batch_size$
+    num_workers: $num_workers$
+
+model:
+  name: larp_tokenizer
+  args:
+    bottleneck:
+      name: bottleneck
+      args:
+        bottleneck_dim: 16
+        norm: 'none'
+        regularizer:
+          name: vq
+          args: 
+            codebook_size: 8192
+            commitment_loss_weight: 0.25
+            codebook_loss_weight: 1.0
+            entropy_loss_weight: 0.0
+            entropy_loss_temperature: 0.01
+            l2_normalized: true
+            stochastic: true
+            stochastic_temperature: 0.03
+
+    prior_model:
+      name: gptc-S
+      use_mix_ss: true
+      mix_ss_max_ratio: 0.5
+      mix_ss_peak_steps_ratio: 0.3
+      n_rounds: 2
+      avg_loss_over_rounds: true
+      no_grad_before_last_round: false
+      no_dropout: false
+      latent_ce_temperature: 1.0
+      args: 
+        l2_normalized: true
+
+    transformer_name: 'transformer_encoder_parallel'
+    encoder_name: 'none'
+    decoder_name: 'none'
+    bottleneck_token_num: 1024
+    input_size: $input_size$
+    frame_num: $frame_num$
+    temporal_patch_size: 4
+    patch_size: 8
+    decoder_temporal_patch_size: 4
+    decoder_patch_size: 8
+    in_channels: 3
+    encoder_hidden_size: 768
+    decoder_hidden_size: 768
+    encoder_num_heads: 12
+    decoder_num_heads: 12
+    encoder_depth: 12
+    decoder_depth: 12
+
+    learned_encoder_patch_pe: false
+    learned_encoder_latent_query_embed: true
+    learned_decoder_latent_pe: false
+    learned_decoder_patch_query_embed: false
+    
+    use_encoder_patch_token_type_embed: false
+    use_encoder_latent_query_token_type_embed: false
+    use_decoder_latent_token_type_embed: false
+    use_decoder_patch_query_token_type_embed: true
+
+    encoder_query_gaussian_init: true
+
+    latent_pe_scale_factor: 10000
+    query_init_std: 0.02
+    
+    
+loss:
+  name: lpips_disc_loss
+  args:
+    disc_type: 'transformer'
+    disc_start: 0
+    disc_self_start: -1
+    pixelloss_weight: 1.0
+    perceptual_weight: 1.0
+    pixel_loss: 'l1'
+    perceptual_loss: 'lpips'
+    perceptual_fp16: false
+    lecam_weight: 0.001
+    disc_loss: 'ns_smooth'
+    disc_weight: 0.3
+    r1_gp_weight: 0.0
+    d_update_freq: 5
+    spectral_norm: false
+    disc_tran_hidden_size: 384
+    disc_tran_n_heads: 12
+    disc_tran_n_layers: 8
+    disc_tran_temporal_patch_size: 4
+    disc_tran_patch_size: 8
+    input_spatial_size: $input_size$
+    frame_num: $frame_num$
+
+
+optimizer:
+  name: adam
+  loss_name: adam
+  args: {lr: 1.e-4, betas: [0.5, 0.9]}
+  loss_args: {lr: 1.e-4, betas: [0.5, 0.9]}
+  lr_type: step
+  lr_step_pcts: 0.9_0.95
+  warmup_epoch: 1
+  min_lr_mult: 0.1
+  prior_lr_mult: 1.0 # prior ar model's lr multiplier
+  emb_lr_mult: 1.0 # embeddings' lr multiplier
+
+
+# Training settings
+max_epoch: 400
+eval_epoch: 25
+vis_epoch: 25
+latest_interval: 5
+save_epoch: 100000000
+save_best: false
+stepwise_logging: false
+ema_decay: '_'
+
+
+# Speed up settings
+use_amp: false
+amp_dtype: 'float16'
+compile: false
+compile_mode: 'default' # 'default or 'reduce-overhead', or 'max-autotune'
+flash_attn: false
+
+
+# Loss settings
+loss_q_weight: 0.1
+loss_q_warmup: '1.0_1'
+loss_kl_weight: 0.0
+kl_decay_epoch: -1
+loss_prior_weight: 0.0 # prior loss weight, the perceptual loss on the prior predicted frames
+loss_latent_ce_weight: 0.06 # the cross entropy loss on the prediction of the prior ar model
+sqt_start_end_epoch: '0.0_0.0_0'
+
+
+# Gradient clipping settings
+clip_grad_max_norm: 0.0
+
+# If you want to initialize the model with a checkpoint, set the path here
+init_checkpoint: ''
+

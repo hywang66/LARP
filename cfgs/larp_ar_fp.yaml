@@ -1,0 +1,111 @@
+trainer: larp_ar_fp_trainer
+
+train_dataset:
+  name: video_dataset
+  args: 
+    root_path: data/metadata
+    split: train
+    frame_num: $frame_num$
+    rand_augment: 'no'
+    csv_file: $csv_file$
+    cls_vid_num: '-1_-1'
+    crop_size: $input_size$
+    scale: 1.0
+    aspect_ratio: 1.0
+    rand_flip: 'yes'
+    frame_rate: 'native'
+    use_all_frames: false
+    pre_load: false
+
+  loader:
+    batch_size: $batch_size$
+    num_workers: $num_workers$
+
+test_dataset:
+  name: video_dataset
+  args: 
+    root_path: data/metadata
+    frame_num: $frame_num$
+    cls_vid_num: '-1_-1'
+    crop_size: $input_size$
+    frame_rate: 'native'
+    use_all_frames: false
+    pre_load: false
+
+  csv_paths: {k600_val: ''}
+  loader:
+    batch_size: $batch_size$
+    num_workers: $num_workers$
+
+model:
+  name: llama-abs-LP
+  args:
+    num_classes: 101
+    cls_token_num: 1
+    token_dropout_p: 0.1
+    use_fixed_pe: false
+
+vae:
+  name: larp_tokenizer
+  checkpoint: ''
+  version: 'sd'
+  eval_deterministic: true
+
+ar:
+  num_samples: 128 # number of samples for training-time FVD calculation
+  num_save_wandb: 32
+  sample_batch_size: 32
+  cfg_scale: 1.0
+  cfg_interval: -1
+  temperature: 1.0
+  top_k: 0
+  top_p: 1.0
+  num_frames: $frame_num$
+  num_cond_frames: 5
+
+
+
+
+optimizer:
+  name: adamw
+  args: {lr: 1.e-4, betas: [0.9, 0.95], weight_decay: 0.00}
+  lr_type: cosine
+  lr_step_pcts: 0.9_0.95
+  warmup_epoch: 1
+  min_lr_mult: 0.01
+
+fvd_real_stats_path: ''
+fid_real_stats_path: ''
+
+
+# Training settings
+max_epoch: 400
+eval_epoch: 25
+vis_epoch: 25
+latest_interval: 5
+save_epoch: 100000000
+save_best: false
+autostop: false
+stepwise_logging: false
+ema_decay: '_'
+
+# Speed up settings
+use_amp: false
+amp_dtype: 'bfloat16'
+vae_force_fp32: false
+compile: false
+compile_mode: 'default' # or 'reduce-overhead', or 'max-autotune'
+flash_attn: false
+
+
+# Dump settings
+dump_ckt: 'no'
+dump_pred: 'no'
+dump_video: 'no'
+
+# Gradient clipping settings
+clip_grad_max_norm: 0.0
+
+
+init_checkpoint: ''
+
