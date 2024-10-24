@@ -5,7 +5,7 @@ python3 \
     train.py --cfg cfgs/larp_ar_fp.yaml \
     --manualSeed 66667 --tag single_gpu \
     --csv_file k600_train.csv --out_path save/larp_ar_fp/ \
-    --name larp_ar_fp -b 8 -j 8 \
+    --name larp_ar_fp -b 4 -j 4 \
     --frame_num 16 --input_size 128 \
     --opts \
     test_dataset.csv_paths.k600_val k600_val.csv \

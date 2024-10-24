@@ -5,7 +5,7 @@ python3 \
     train.py --cfg cfgs/larp_tokenizer.yaml \
     --manualSeed 66667 --tag single_gpu \
     --csv_file k600_train.csv+ucf101_train.csv --out_path save/larp_tokenizer/ \
-    --name larp_tokenizer -b 16 -j 8 \
+    --name larp_tokenizer -b 8 -j 4 \
     --frame_num 16 --input_size 128   \
     --opts \
     test_dataset.csv_paths.ucf101_val ucf101_val.csv \

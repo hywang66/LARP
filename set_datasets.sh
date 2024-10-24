@@ -5,7 +5,7 @@ cd "$PROJECT_DIR"
 
 # Set the dataset paths, modify the source paths to your own dataset paths!
 
-# UCF-101
+# UCF101
 ln -s path/to/UCF101/videos ./data/ucf101
 
 # Kinetics-600

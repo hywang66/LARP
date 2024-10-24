@@ -5,6 +5,13 @@
 [![arXiv](https://img.shields.io/badge/arXiv-xxxx-b31b1b.svg)](https://arxiv.org/abs/xxx)&nbsp;
 [![project page](https://img.shields.io/badge/project_page-LARP-brightgreen)](https://hywang66.github.io/larp)&nbsp;
 
+<!-- <a href="https://arxiv.org/abs/xxx" target="_blank">
+  <img src="https://img.shields.io/badge/arXiv-xxxx-b31b1b.svg" alt="arXiv">
+</a>&nbsp;
+<a href="https://hywang66.github.io/larp" target="_blank">
+  <img src="https://img.shields.io/badge/project_page-LARP-brightgreen" alt="project page">
+</a>&nbsp; -->
+
 </div>
 
 <p align="center">
@@ -34,7 +41,7 @@ We present LARP, a novel video tokenizer inherently aligned with autoregressive 
    
 3. Set up the datasets using `set_datasets.sh`
     <details>
-    <summary> This script sets up datast for UCF-101 and Kinetics-600 datasets. </summary>
+    <summary> This script sets up datast for UCF101 and Kinetics-600 datasets. </summary>
 
     You need to download the datasets you want to use and set the paths in the script. This script will create the necessary symbolic links so that the code can find the data.
 
@@ -44,11 +51,11 @@ We present LARP, a novel video tokenizer inherently aligned with autoregressive 
 ## Pretrained Models
 
 We provide pretrained models for LARP tokenizer, LARP AR model, and LARP AR frame prediction model.
-| Model                 | #params | FVD         | 🤗 HuggingFace                                                                  |
-| --------------------- | ------- | ----------- | ------------------------------------------------------------------------------ |
-| LARP-L-Long-tokenizer | 173M    | 20 (recon.) | <center>[link](https://huggingface.co/hywang66/LARP-L-long-tokenizer)</center> |
-| LARP-L-Long-AR        | 632M    | 57 (gen.)   | <center>[link](https://huggingface.co/hywang66/LARP-L-long-AR)</center>        |
-| LARP-L-Long-AR-FP     | 632M    | 5.1 (FP)    | <center>[link](https://huggingface.co/hywang66/LARP-L-long-AR-FP)</center>     |
+| Model                 | #params | FVD         |                         🤗 HuggingFace                         |
+| --------------------- | :-----: | ----------- | :-----------------------------------------------------------: |
+| LARP-L-Long-tokenizer |  173M   | 20 (recon.) | [link](https://huggingface.co/hywang66/LARP-L-long-tokenizer) |
+| LARP-L-Long-AR        |  632M   | 57 (gen.)   |    [link](https://huggingface.co/hywang66/LARP-L-long-AR)     |
+| LARP-L-Long-AR-FP     |  632M   | 5.1 (FP)    |   [link](https://huggingface.co/hywang66/LARP-L-long-AR-FP)   |
 
 Please refer to the **sampling and evaluation** section for details on how to use these models.
    
@@ -63,7 +70,7 @@ We provide scripts for training LARP tokenizer, LARP AR model, and LARP AR frame
 bash scripts/train_larp_tokenizer.sh
 ```
 
-### Training LARP AR model on UCF-101 dataset
+### Training LARP AR model on UCF101 dataset
 ```bash
 bash scripts/train_larp_ar.sh
 ```
@@ -91,11 +98,11 @@ Unless specified, all commands in this section are supposed to be run on an sing
 
 ### UCF101 Class-conditional Generation
 
-The following command samples 10,000 videos from the LARP AR model trained on UCF-101 dataset and compute the FVD score with the real videos.
+The following command samples 10,000 videos from the LARP AR model trained on UCF101 dataset and compute the FVD score with the real videos.
 The videos are generated class-conditionally, i.e., each video is generated from a single class. 
-Note that the UCF-101 dataset is required to run this run this script. 
+Note that the UCF101 dataset is required to run this run this script. 
 
-This command can reproduce the UCF-101 generation FVD results reported in the Table 1 of the paper. 
+This command can reproduce the UCF101 generation FVD results reported in the Table 1 of the paper. 
 
 ```bash
 python3 sample.py \
@@ -190,8 +197,8 @@ Ensure there is no overlap in sample indices across processes, and assign each p
 
 ### LARP Tokenizer Reconstruction Evaluation
 
-The following command evaluates the LARP tokenizer on the UCF-101 dataset. The script computes the reconstruction FVD (rFVD) and other related metrics. 
-Note that the UCF-101 dataset is required to run this run this script. 
+The following command evaluates the LARP tokenizer on the UCF101 dataset. The script computes the reconstruction FVD (rFVD) and other related metrics. 
+Note that the UCF101 dataset is required to run this run this script. 
 
 This command can reproduce the LARP tokenizer reconstruction FVD results reported in the Table 1 of the paper.
 
