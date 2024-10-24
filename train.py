@@ -16,6 +16,7 @@ from mergedeep import merge
 import trainers
 import utils
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 def parse_args(args=None):
     parser = argparse.ArgumentParser()
@@ -131,7 +132,7 @@ def make_cfg(args):
         exp_name, cfg, args
     )
     env.save_dir = os.path.join(args.out_path, env.exp_name)
-    env.port = str(29600 + utils.hash_string_to_int(env.save_dir) % 10000)
+    env.port = str(2960 + utils.hash_string_to_int(env.save_dir) % 10000)
     cfg.manualSeed = args.manualSeed
     return cfg
 

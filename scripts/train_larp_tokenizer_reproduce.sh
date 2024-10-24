@@ -1,11 +1,11 @@
-# This script trains the LARP Tokenizer model on a single GPU machine.
+# This script trains the LARP Tokenizer model on an 8-GPU machine using Distributed Data Parallel (DDP).
+# It can reproduce the pretrained model hywang66/LARP-L-long-tokenizer released on HuggingFace.
 
-export CUDA_VISIBLE_DEVICES=0
 python3 \
     train.py --cfg cfgs/larp_tokenizer.yaml \
-    --manualSeed 66667 --tag single_gpu \
+    --manualSeed 66667 --tag default \
     --csv_file k600_train.csv+ucf101_train.csv --out_path save/larp_tokenizer/ \
-    --name larp_tokenizer -b 16 -j 8 \
+    --name larp_tokenizer -b 128 -j 128 \
     --frame_num 16 --input_size 128   \
     --opts \
     test_dataset.csv_paths.ucf101_val ucf101_val.csv \

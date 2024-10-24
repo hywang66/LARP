@@ -1,11 +1,11 @@
-# This script trains the LARP AR model for frame prediction on a single GPU machine.
+# This script trains the 632M LARP AR model for frame prediction on an 8-GPU machine using Distributed Data Parallel (DDP).
+# It can reproduce the pretrained model hywang66/LARP-L-long-AR-FP released on HuggingFace.
 
-export CUDA_VISIBLE_DEVICES=0
 python3 \
     train.py --cfg cfgs/larp_ar_fp.yaml \
-    --manualSeed 66667 --tag single_gpu \
+    --manualSeed 66667 --tag default \
     --csv_file k600_train.csv --out_path save/larp_ar_fp/ \
-    --name larp_ar_fp -b 8 -j 8 \
+    --name larp_ar_fp -b 64 -j 128 \
     --frame_num 16 --input_size 128 \
     --opts \
     test_dataset.csv_paths.k600_val k600_val.csv \
@@ -24,4 +24,11 @@ python3 \
 
 # append --wandb-upload if you want to sync to wandb
 # append --replace if you want to start a new training run instead of resuming from the latest checkpoint (if available)
+
+
+
+
+
+
+
 

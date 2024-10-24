@@ -1,5 +1,12 @@
 # LARP: Tokenizing Videos 🎬 with a Learned Autoregressive Generative Prior 🚀
 
+<div align="center">
+
+[![arXiv](https://img.shields.io/badge/arXiv-xxxx-b31b1b.svg)](https://arxiv.org/abs/xxx)&nbsp;
+[![project page](https://img.shields.io/badge/project_page-LARP-brightgreen)](https://hywang66.github.io/larp)&nbsp;
+
+</div>
+
 <p align="center">
 <img src="assets/teaser.jpg" width=95%>
 <p>
@@ -37,18 +44,19 @@ We present LARP, a novel video tokenizer inherently aligned with autoregressive 
 ## Pretrained Models
 
 We provide pretrained models for LARP tokenizer, LARP AR model, and LARP AR frame prediction model.
-| Model                 | #params | FVD         | 🤗 HuggingFace                                                |
-| --------------------- | ------- | ----------- | ------------------------------------------------------------ |
-| LARP-L-Long-tokenizer | 173M    | 20 (recon.) | [link](https://huggingface.co/hywang66/LARP-L-long-tokenizer) |
-| LARP-L-Long-AR        | 632M    | 57 (gen.)   | [link](https://huggingface.co/hywang66/LARP-L-long-AR)        |
-| LARP-L-Long-AR-FP     | 632M    | 5.1 (FP)    | [link](https://huggingface.co/hywang66/LARP-L-long-AR-FP)     |
+| Model                 | #params | FVD         | 🤗 HuggingFace                                                                  |
+| --------------------- | ------- | ----------- | ------------------------------------------------------------------------------ |
+| LARP-L-Long-tokenizer | 173M    | 20 (recon.) | <center>[link](https://huggingface.co/hywang66/LARP-L-long-tokenizer)</center> |
+| LARP-L-Long-AR        | 632M    | 57 (gen.)   | <center>[link](https://huggingface.co/hywang66/LARP-L-long-AR)</center>        |
+| LARP-L-Long-AR-FP     | 632M    | 5.1 (FP)    | <center>[link](https://huggingface.co/hywang66/LARP-L-long-AR-FP)</center>     |
 
 Please refer to the **sampling and evaluation** section for details on how to use these models.
    
 
 ## Training
 
-We provide scripts for training LARP tokenizer, LARP AR model, and LARP AR frame prediction model. Note that all scripts are configured to run on an 8-GPU machine. You may need to adjust the batch size and number of dataloader workers if you have fewer GPUs.
+We provide scripts for training LARP tokenizer, LARP AR model, and LARP AR frame prediction model using a single GPU.
+<!-- Note that all scripts are configured to run on an 8-GPU machine. You may need to adjust the batch size and number of dataloader workers if you have fewer GPUs. -->
 
 ### Training LARP Tokenizer
 ```bash
@@ -65,6 +73,13 @@ bash scripts/train_larp_ar.sh
 bash scripts/train_larp_ar_fp.sh
 ```
 
+### Reproducing the Pretrained Models
+To reproduce the pretrained models released on HuggingFace, refer to the following training scripts:
+```bash
+scripts/train_larp_tokenizer_reproduce.sh
+scripts/train_larp_ar_reproduce.sh
+scripts/train_larp_ar_fp_reproduce.sh
+```
 
 
 ## Sampling and Evaluation
@@ -80,8 +95,10 @@ The following command samples 10,000 videos from the LARP AR model trained on UC
 The videos are generated class-conditionally, i.e., each video is generated from a single class. 
 Note that the UCF-101 dataset is required to run this run this script. 
 
+This command can reproduce the UCF-101 generation FVD results reported in the Table 1 of the paper. 
+
 ```bash
-python sample.py \
+python3 sample.py \
     --ar_model hywang66/LARP-L-long-AR \
     --tokenizer hywang66/LARP-L-long-tokenizer \
     --output_dir samples/ucf_reproduce \
@@ -101,8 +118,10 @@ The FVD score will be displayed at the end of the script and also appended to th
 The following command predicts the next 11 frames conditioned on the previous 5 frames using the LARP AR frame prediction model trained on Kinetics-600 dataset. 50,000 samples are generated and used to compute the FVD score with the real videos. 
 Note that the Kinetics-600 dataset is required to run this run this script. 
 
+This command can reproduce the Kinetics-600 frame prediction FVD results reported in the Table 1 of the paper. 
+
 ```bash
-python sample.py \
+python3 sample.py \
     --fp --num_cond_frames 5 \
     --ar_model hywang66/LARP-L-long-AR-FP \
     --tokenizer hywang66/LARP-L-long-tokenizer \
@@ -123,7 +142,7 @@ When multiple GPUs are available, `sample.py` can be run in parallel to accelera
 
 Example commands:
 ```bash
-python sample.py \
+python3 sample.py \
     --ar_model hywang66/LARP-L-long-AR \
     --tokenizer hywang66/LARP-L-long-tokenizer \
     --output_dir samples/ucf_reproduce \
@@ -136,7 +155,7 @@ python sample.py \
     --dataset_csv ucf101_train.csv \
     --dataset_split_seed 42
 
-python sample.py \
+python3 sample.py \
     --ar_model hywang66/LARP-L-long-AR \
     --tokenizer hywang66/LARP-L-long-tokenizer \
     --output_dir samples/ucf_reproduce \
@@ -151,7 +170,7 @@ python sample.py \
 
 ......
 
-python sample.py \
+python3 sample.py \
     --ar_model hywang66/LARP-L-long-AR \
     --tokenizer hywang66/LARP-L-long-tokenizer \
     --output_dir samples/ucf_reproduce \
@@ -174,8 +193,10 @@ Ensure there is no overlap in sample indices across processes, and assign each p
 The following command evaluates the LARP tokenizer on the UCF-101 dataset. The script computes the reconstruction FVD (rFVD) and other related metrics. 
 Note that the UCF-101 dataset is required to run this run this script. 
 
+This command can reproduce the LARP tokenizer reconstruction FVD results reported in the Table 1 of the paper.
+
 ```bash
-python eval/eval_larp_tokenizer.py \
+python3 eval/eval_larp_tokenizer.py \
     --tokenizer hywang66/LARP-L-long-tokenizer \
     --dataset_csv ucf101_train.csv \
     --use_amp --det
