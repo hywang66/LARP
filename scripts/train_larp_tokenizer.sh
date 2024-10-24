@@ -1,10 +1,10 @@
 # This script trains the LARP Tokenizer model on an 8-GPU machine using Distributed Data Parallel (DDP).
 # Use a smaller global batch size (-b) and reduce the number of dataloader workers (-j) accordingly if you encounter OOM errors.
-python \
+python3 \
     run_trainer.py --cfg cfgs/larp_tokenizer.yaml \
     --manualSeed 66667 --tag default \
-    --csv_file k600_train.csv+ucf101_train.csv --out_path save/larp_tokenizer/ \
-    --name larp_tokenizer -b 128 -j 128 \
+    --csv_file ucf101_train.csv --out_path save/larp_tokenizer/ \
+    --name larp_tokenizer -b 32 -j 8 \
     --frame_num 16 --input_size 128   \
     --opts \
     test_dataset.csv_paths.ucf101_val ucf101_val.csv \
