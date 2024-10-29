@@ -163,7 +163,6 @@ loss_q_weight: 0.1
 loss_q_warmup: '1.0_1'
 loss_kl_weight: 0.0
 kl_decay_epoch: -1
-loss_prior_weight: 0.0 # prior loss weight, the perceptual loss on the prior predicted frames
 loss_latent_ce_weight: 0.06 # the cross entropy loss on the prediction of the prior ar model
 sqt_start_end_epoch: '0.0_0.0_0'
 
