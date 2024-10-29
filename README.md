@@ -2,15 +2,9 @@
 
 <div align="center">
 
-[![arXiv](https://img.shields.io/badge/arXiv-xxxx-b31b1b.svg)](https://arxiv.org/abs/xxx)&nbsp;
+[![arXiv](https://img.shields.io/badge/arXiv-2410.21264-b31b1b.svg)](https://arxiv.org/abs/2410.21264)&nbsp;
 [![project page](https://img.shields.io/badge/project_page-LARP-brightgreen)](https://hywang66.github.io/larp)&nbsp;
 
-<!-- <a href="https://arxiv.org/abs/xxx" target="_blank">
-  <img src="https://img.shields.io/badge/arXiv-xxxx-b31b1b.svg" alt="arXiv">
-</a>&nbsp;
-<a href="https://hywang66.github.io/larp" target="_blank">
-  <img src="https://img.shields.io/badge/project_page-LARP-brightgreen" alt="project page">
-</a>&nbsp; -->
 
 </div>
 
@@ -214,5 +208,13 @@ python3 eval/eval_larp_tokenizer.py \
 
 If you find this code useful in your research, please consider citing:
 ```
-TBD
+@article{larp,
+    title={LARP: Tokenizing Videos with a Learned Autoregressive Generative Prior}, 
+    author={Hanyu Wang and Saksham Suri and Yixuan Ren and Hao Chen and Abhinav Shrivastava},
+    year={2024},
+    eprint={2410.21264},
+    archivePrefix={arXiv},
+    primaryClass={cs.CV},
+    url={https://arxiv.org/abs/2410.21264}, 
+}
 ```
