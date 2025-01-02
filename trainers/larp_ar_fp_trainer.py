@@ -45,14 +45,22 @@ class LARPARFramePredictionTrainer(BaseTrainer):
         self.num_frames = cfg['ar']['num_frames']
         self.num_cond_frames = cfg['ar']['num_cond_frames']
         self.log(f'Using {self.num_cond_frames} frames as condition')
-
         cfg['vae']['checkpoint'] = cfg['vae']['checkpoint'].strip("'").strip('"')
 
-        self.vae = (
-            get_model_cls(cfg['vae']['name'])
-            .from_checkpoint(cfg['vae']['checkpoint'], version=cfg['vae']['version'])
-            .to(self.device)
-        )
+        if os.path.exists(cfg['vae']['checkpoint']):
+            # load model from local checkpoint
+            self.vae = (
+                get_model_cls(cfg['vae']['name'])
+                .from_checkpoint(cfg['vae']['checkpoint'], version=cfg['vae']['version'])
+                .to(self.device)
+            )
+        else:
+            # load model from huggingface hub
+            self.vae = (
+                get_model_cls(cfg['vae']['name'])
+                .from_pretrained(cfg['vae']['checkpoint'])
+                .to(self.device)
+            )
 
         self.vae.eval()
         vae_eval_deterministic = cfg['vae'].get('eval_deterministic', False)
