@@ -1,4 +1,4 @@
-# LARP: Tokenizing Videos 🎬 with a Learned Autoregressive Generative Prior 🚀
+# LARP: Tokenizing Videos 🎬 with a Learned Autoregressive Generative Prior 🚀 (ICLR 2025)
 
 <div align="center">
 
